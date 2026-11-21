@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#111713" />
+  <meta name="description" content="Northstar — your personal life operating system." />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
+  <title>Northstar — Personal Life OS</title>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#today" aria-label="Northstar home"><span class="brand-mark">✳</span><span>NORTHSTAR<small>PERSONAL LIFE OS</small></span></a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <button class="nav-item active" data-view="today"><span>◷</span>Today</button>
+        <button class="nav-item" data-view="week"><span>▦</span>Weekly planner</button>
+        <button class="nav-item" data-view="habits"><span>✓</span>Habits</button>
+        <button class="nav-item" data-view="review"><span>✎</span>Reflection</button>
+      </nav>
+      <div class="side-label second-label">YOUR PILLARS</div>
+      <div class="pillar-list"><div><i class="dot sage"></i> Health & fitness</div><div><i class="dot blue"></i> Career & learning</div><div><i class="dot amber"></i> Money & projects</div><div><i class="dot rose"></i> Personal life</div></div>
+      <div class="sidebar-bottom"><div class="quote-mark">“</div><p>Build a life that feels as good as it looks on paper.</p><span>YOUR NORTH STAR</span></div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar"><div class="mobile-brand"><span class="brand-mark">✳</span> NORTHSTAR</div><div class="topbar-right"><span class="date-chip" id="topDate"></span><button class="icon-button" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">◐</button><button class="avatar" aria-label="Profile">D</button></div></header>
+      <div class="content" id="appContent">
+        <section class="view active" id="view-today">
+          <div class="welcome-row"><div><div class="eyebrow" id="todayDate"></div><h1 id="greeting">Good morning, Dhruv<span class="period">.</span></h1><p class="subheading">A little progress, in the right direction.</p></div><div class="day-orbit"><span>✳</span><small>ONE DAY<br>AT A TIME</small></div></div>
+          <div class="stats-grid"><article class="stat-card"><div class="stat-label">DAILY FOCUS</div><div class="stat-value" id="focusStat">0<span>/3</span></div><div class="stat-foot">Priorities completed</div><div class="mini-track"><i id="focusTrack"></i></div></article><article class="stat-card"><div class="stat-label">HABITS</div><div class="stat-value" id="habitStat">0<span>/5</span></div><div class="stat-foot">Small promises kept</div><div class="mini-track"><i id="habitTrack"></i></div></article><article class="stat-card mood-card"><div class="stat-label">TODAY'S INTENTION</div><div class="intention" id="intentionText">Show up, then build.</div><button class="text-action" data-open-review>Set an intention ↗</button></article></div>
+          <div class="section-heading"><div><div class="eyebrow">MAKE IT COUNT</div><h2>Today's priorities</h2></div><button class="subtle-button" id="editPriorities">Edit list <span>↗</span></button></div>
+          <div class="priority-card" id="priorityList"></div>
+          <div class="two-column">
+            <section class="panel schedule-panel"><div class="panel-heading"><div><div class="eyebrow">YOUR DAY, WITH ROOM TO BREATHE</div><h2>Daily rhythm</h2></div><span class="tiny-tag">WEEKDAY</span></div><div class="schedule-list" id="scheduleList"></div></section>
+            <section class="panel habits-panel"><div class="panel-heading"><div><div class="eyebrow">CONSISTENCY OVER INTENSITY</div><h2>Daily habits</h2></div><button class="circle-link" data-view-link="habits">↗</button></div><div id="todayHabits" class="today-habits"></div><div class="habit-footer"><span id="habitFooterText">Start with one.</span><span class="streak-pill">✳ <b id="streakValue">0</b> day streak</span></div></section>
+          </div>
+          <div class="evening-note"><div class="note-icon">✧</div><div><b>Remember to leave room for life.</b><p>Your routine is here to support you, not become another thing to keep up with.</p></div></div>
+        </section>
+
+        <section class="view" id="view-week">
+          <div class="page-intro"><div class="eyebrow">THE BIGGER PICTURE</div><h1>Your week<span class="period">.</span></h1><p class="subheading">Give each day a direction. Keep the details flexible.</p></div>
+          <div class="week-controls"><button class="icon-button" id="prevWeek">←</button><div><b id="weekRange"></b><small>MONDAY – SUNDAY</small></div><button class="icon-button" id="nextWeek">→</button><button class="subtle-button" id="thisWeek">Today</button></div>
+          <div class="week-grid" id="weekGrid"></div>
+          <div class="panel weekly-goals"><div class="panel-heading"><div><div class="eyebrow">A FEW THINGS THAT MATTER</div><h2>Weekly goals</h2></div><button class="subtle-button" id="addGoal">+ Add goal</button></div><div id="goalList"></div></div>
+          <div class="weekly-note"><b>Make the plan serve the week.</b><span>It's okay to move things around. A plan is a guide, not a contract.</span></div>
+        </section>
+
+        <section class="view" id="view-habits">
+          <div class="page-intro"><div class="eyebrow">SMALL PROMISES, KEPT OFTEN</div><h1>Your habits<span class="period">.</span></h1><p class="subheading">Build a baseline you can return to, even on difficult days.</p></div>
+          <div class="habit-overview"><div><div class="eyebrow">TODAY'S COMPLETION</div><strong id="habitBig">0%</strong><p id="habitBigText">A fresh page.</p></div><div class="ring" id="habitRing"><div><b id="ringNumber">0%</b><small>DONE</small></div></div></div>
+          <div class="panel habit-manager"><div class="panel-heading"><div><div class="eyebrow">YOUR DAILY BASELINE</div><h2>Habit checklist</h2></div><button class="subtle-button" id="addHabit">+ New habit</button></div><div id="habitManagerList"></div></div>
+          <div class="panel habit-principle"><div class="quote-mark">“</div><div><h3>Never miss twice.</h3><p>Missing a day is human. Returning to the habit is the practice. Your streak is information, not a judgement.</p></div></div>
+        </section>
+
+        <section class="view" id="view-review">
+          <div class="page-intro"><div class="eyebrow">PAUSE. NOTICE. ADJUST.</div><h1>Daily reflection<span class="period">.</span></h1><p class="subheading">A few honest minutes can make tomorrow clearer.</p></div>
+          <div class="reflection-layout"><div class="panel reflection-form"><div class="eyebrow">CLOSE THE DAY</div><h2 id="reflectionHeading">How did today feel?</h2><label class="field-label">Today's intention</label><input id="intentionInput" class="text-input" maxlength="90" placeholder="What do you want today to stand for?"/><label class="field-label">One thing I'm proud of</label><textarea id="proudInput" placeholder="It doesn't have to be big..."></textarea><label class="field-label">What could have gone better?</label><textarea id="improveInput" placeholder="Notice it without judging yourself..."></textarea><label class="field-label">What matters tomorrow?</label><textarea id="tomorrowInput" placeholder="One thing to carry forward..."></textarea><button class="primary-button" id="saveReflection">Save reflection <span>↗</span></button><div class="save-status" id="saveStatus"></div></div><div class="reflection-side"><div class="panel mood-panel"><div class="eyebrow">CHECK IN WITH YOURSELF</div><h2>How are you feeling?</h2><div class="mood-options" id="moodOptions"><button data-mood="Low">☁<span>Low</span></button><button data-mood="Okay">◒<span>Okay</span></button><button data-mood="Good">☀<span>Good</span></button><button data-mood="Great">✦<span>Great</span></button></div></div><div class="panel reflection-tip"><span>✧ A GENTLE REMINDER</span><p>You don't need to optimise every part of your life. Some days are for progress. Some are for recovery. Both count.</p></div></div></div>
+        </section>
+
+        <section class="view" id="view-settings">
+          <div class="page-intro"><div class="eyebrow">MAKE IT YOURS</div><h1>Preferences<span class="period">.</span></h1><p class="subheading">Set the foundations for your day.</p></div>
+          <div class="panel settings-panel"><h2>Daily schedule</h2><div class="settings-grid"><label>Wake-up time<input id="wakeSetting" type="time" value="06:45"/></label><label>Bedtime target<input id="bedSetting" type="time" value="22:45"/></label><label>Work starts<input id="workStartSetting" type="time" value="09:00"/></label><label>Work ends<input id="workEndSetting" type="time" value="18:00"/></label></div><label class="field-label">Work arrangement</label><select id="workModeSetting"><option>Office</option><option>Hybrid</option><option>Work from home</option></select><label class="field-label">Daily step target</label><input id="stepsSetting" type="number" min="1000" max="30000" step="500" value="8000"/><button class="primary-button" id="saveSettings">Save preferences <span>↗</span></button></div>
+          <div class="panel data-panel"><div><h2>Your data</h2><p>V1 saves your information on this device and browser. It is not yet synced to other devices.</p></div><div class="data-actions"><button class="subtle-button" id="exportData">Export backup ↓</button><button class="subtle-button danger-text" id="resetData">Reset app data</button></div></div>
+          <div class="version-line">NORTHSTAR · VERSION 1.0 · BUILT FOR YOUR LIFE</div>
+        </section>
+      </div>
+    </main>
+    <nav class="bottom-nav" aria-label="Mobile navigation"><button class="active" data-view="today"><span>◷</span><small>Today</small></button><button data-view="week"><span>▦</span><small>Week</small></button><button data-view="habits"><span>✓</span><small>Habits</small></button><button data-view="review"><span>✎</span><small>Reflect</small></button><button data-view="settings"><span>⚙</span><small>Settings</small></button></nav>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog id="editDialog"><form method="dialog" id="editForm"><div class="dialog-head"><div><div class="eyebrow">MAKE IT YOURS</div><h2 id="dialogTitle">Edit</h2></div><button class="icon-button" value="cancel" aria-label="Close">×</button></div><div id="dialogFields"></div><div class="dialog-actions"><button class="subtle-button" value="cancel">Cancel</button><button class="primary-button" id="dialogSave" value="default">Save changes</button></div></form></dialog>
+  <script src="/app.js"></script>
+</body>
+</html>

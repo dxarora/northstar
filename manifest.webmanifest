@@ -1,0 +1,11 @@
+{
+  "name": "Northstar — Personal Life OS",
+  "short_name": "Northstar",
+  "description": "Your personal life operating system.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f5f0",
+  "theme_color": "#111713",
+  "orientation": "portrait",
+  "icons": [{"src":"/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
