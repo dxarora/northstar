@@ -28,9 +28,19 @@ where status is null;
 alter table public.user_goals
   alter column status set default 'active';
 
-alter table public.user_goals
-  add constraint user_goals_status_check
-  check (status in ('active', 'completed', 'paused', 'archived'));
+do $
+begin
+  if not exists (
+    select 1 from pg_constraint
+    where conname = 'user_goals_status_check'
+      and conrelid = 'public.user_goals'::regclass
+  ) then
+    alter table public.user_goals
+      add constraint user_goals_status_check
+      check (status in ('active', 'completed', 'paused', 'archived'));
+  end if;
+end;
+$;
 
 create index if not exists user_goals_user_status_idx
   on public.user_goals(user_id, status, created_at desc);
