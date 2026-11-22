@@ -1,43 +1,50 @@
-# Northstar — Personal Life OS (V1)
+# Northstar — Personal Life OS
 
-A mobile-first, installable personal dashboard for daily priorities, a weekly planner, habits, reflection, and preferences.
+NORTHSTAR is a mobile-first PWA with daily planning, habits, weekly goals, reflection, themes, Supabase authentication and account-scoped cloud persistence.
 
-## Run locally
+## Stack
+- Vite + vanilla JavaScript
+- Supabase Auth (Google OAuth and email/password)
+- Supabase Postgres with Row Level Security
+- Vercel deployment
 
-This is a static PWA and needs no build step. From this folder run:
+## Local development
+1. Install Node.js 20 or newer.
+2. Copy .env.example to .env.local and fill in the Supabase URL and publishable key.
+3. Run:
+   npm install
+   npm run dev
+4. Open the local Vite URL shown in the terminal.
 
-```bash
-python3 -m http.server 3000
-```
+## Supabase setup
+1. Create a Supabase project.
+2. Open SQL Editor and run supabase/schema.sql.
+3. Go to Authentication → Providers → Google and enable Google.
+4. Create an OAuth 2.0 Client ID in Google Cloud Console. Use the callback URL displayed by Supabase as the authorised redirect URI. Add the Client ID and Client Secret to Supabase, not to frontend environment variables.
+5. In Supabase Authentication → URL Configuration, set the Vercel production URL as the Site URL and add the exact production and local development origins to the redirect allow list.
+6. In Vercel → Project Settings → Environment Variables, configure:
+   - VITE_SUPABASE_URL
+   - VITE_SUPABASE_PUBLISHABLE_KEY (or VITE_SUPABASE_ANON_KEY if using the legacy public anon key)
+7. Redeploy after setting environment variables.
 
-Open http://localhost:3000. (Service worker/PWA installation requires localhost or HTTPS.)
+Never put the Google OAuth client secret or Supabase service-role key in Vite variables. VITE_ variables are bundled into browser code. The browser only receives the Supabase publishable/anon key; RLS is mandatory.
 
-## Deploy to Vercel
+## Data and migration
+- The first successful sign-in checks for an existing cloud snapshot.
+- If an account has no cloud snapshot, the app imports a pre-existing V1 localStorage snapshot only when one exists and is not already claimed by another account.
+- A genuinely new account with no legacy browser data starts with an empty application state.
+- Existing local data is retained locally after migration. Export a JSON backup before the first sign-in as an extra precaution.
+- After sign-in, the UI loads the account's appState from Supabase and debounces cloud saves. A local browser cache remains for responsiveness.
+- New accounts start with a blank workspace: no seeded habits, priorities, weekly goals, daily schedule, or fitness targets. Users create their own structure.
+- The current app state is stored as JSONB in user_preferences.preferences.appState. Relational tables provide a secure foundation for future structured feature storage; the frontend currently uses the JSONB snapshot.
 
-1. Create a GitHub repository and upload the contents of this folder (not the containing folder itself).
-2. Import the repository into Vercel.
-3. Select **Other** as the framework preset if prompted. No build command is required; set the output directory to `.`.
-4. Deploy.
-5. Open the HTTPS deployment on Android Chrome and choose **Add to Home screen** / **Install app**.
+## Security notes
+- Supabase Auth handles identity and OAuth.
+- RLS policies isolate all user-owned tables.
+- HTTPS/TLS protects data in transit; Supabase-managed storage encryption at rest is relied on. This is not per-account end-to-end encryption. Client-side encryption/key recovery is not implemented.
+- Keep the service-role key and Google OAuth client secret out of the browser and repository.
+- Do not store banking passwords, card PINs or other credentials in NORTHSTAR.
 
-## V1 features
-
-- Today dashboard with editable top-three priorities
-- Personal daily schedule based on configurable wake, work and bedtime settings
-- Daily habit checklist and completion indicators
-- Monday-start weekly planner and editable weekly goals
-- Daily reflection, intention and mood check-in
-- Light/dark theme
-- Local browser persistence, offline shell caching and JSON backup export
-- Responsive mobile and desktop layouts
-
-## Important limitations
-
-- Data is stored in localStorage in the current browser/device. It is not cloud-synced, encrypted at rest by this app, or shared across devices.
-- Browser notifications are not enabled in V1. The current automation is in-app progress calculation and a cached offline shell, not scheduled push reminders.
-- No financial account credentials or sensitive banking information should be entered.
-- V1 is a personal prototype, not a medical or financial advice product.
-
-## Next release
-
-Add Supabase authentication and row-level-security-protected cloud sync, then optional reminder scheduling and dedicated fitness, career, finance and project modules.
+## Current release scope
+Included: Google and email/password authentication, password recovery, branded loading animation, cloud app-state fetch/save, one-time local snapshot migration, empty-by-default user-defined weekly goals, and the current V1 dashboard.
+Not included: scheduled push reminders, automated weekly summaries, AI analysis, full offline write queue/conflict resolution, or client-side per-account encryption.
